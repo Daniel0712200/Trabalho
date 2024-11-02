@@ -1,0 +1,23 @@
+databaseType = "PostgreSql"
+id = "c777715f-a3d4-49f6-9cc0-419551b03d9b"
+name = "Conexoes"
+
+[flyway]
+locations = [ "filesystem:migrations" ]
+mixed = true
+outOfOrder = true
+schemaModelLocation = "schema-model"
+validateMigrationNaming = true
+
+[flyway.check]
+majorTolerance = 0
+
+[flywayDesktop]
+developmentEnvironment = "development"
+shadowEnvironment = "shadow"
+
+[redgateCompare]
+filterFile = "filter.rgf"
+
+[redgateCompare.postgresql.options.ignores]
+ignoreNewlinesInTextObjects = "off"
