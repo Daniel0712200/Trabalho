@@ -3,17 +3,14 @@ public class Tecnico extends Funcionario {
 
     public Tecnico(String nome, String telefone, String email, double salario, String especialidade) {
         super(nome, telefone, email, salario);
-        if (especialidade == null || especialidade.isEmpty()) throw new IllegalArgumentException("Especialidade não pode ser vazia");
         this.especialidade = especialidade;
     }
 
-    // Getter e Setter para especialidade
-    public String getEspecialidade() {
-        return especialidade;
-    }
+    public String getEspecialidade() { return especialidade; }
+    public void setEspecialidade(String especialidade) { this.especialidade = especialidade; }
 
-    public void setEspecialidade(String especialidade) {
-        if (especialidade == null || especialidade.isEmpty()) throw new IllegalArgumentException("Especialidade não pode ser vazia");
-        this.especialidade = especialidade;
+    @Override
+    public String toString() {
+        return super.toString() + ", Especialidade='" + especialidade + "'";
     }
 }

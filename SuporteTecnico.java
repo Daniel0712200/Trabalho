@@ -1,74 +1,24 @@
-import java.time.LocalDateTime;
-
 public class SuporteTecnico extends Servico {
+    public enum Prioridade { BAIXA, MEDIA, ALTA }
     private Prioridade prioridade;
-    private LocalDateTime horarioAtendimento;
-    private int duracaoEstimadaMinutos;
+    private int duracao; // em minutos
 
-    public SuporteTecnico(String descricao, double valor, Prioridade prioridade, int duracaoEstimadaMinutos) {
+    public SuporteTecnico(String descricao, double valor, Prioridade prioridade, int duracao) {
         super(descricao, valor);
-        setPrioridade(prioridade);
-        setDuracaoEstimadaMinutos(duracaoEstimadaMinutos);
-        this.horarioAtendimento = LocalDateTime.now();
+        this.prioridade = prioridade;
+        this.duracao = duracao;
     }
 
-    
-    public SuporteTecnico(String descricao, double valor, int prioridadeInt, int duracaoEstimadaMinutos) {
-        super(descricao, valor);
-        this.prioridade = Prioridade.values()[Math.min(Math.max(prioridadeInt - 1, 0), Prioridade.values().length - 1)];
-        setDuracaoEstimadaMinutos(duracaoEstimadaMinutos);
-        this.horarioAtendimento = LocalDateTime.now();
-    }
-
-    public Prioridade getPrioridade() {
-        return prioridade;
-    }
-
-    public void setPrioridade(Prioridade prioridade) {
-        this.prioridade = prioridade != null ? prioridade : Prioridade.DESCONHECIDA;
-    }
-
-    public LocalDateTime getHorarioAtendimento() {
-        return horarioAtendimento;
-    }
-
-    public int getDuracaoEstimadaMinutos() {
-        return duracaoEstimadaMinutos;
-    }
-
-    public void setDuracaoEstimadaMinutos(int duracaoEstimadaMinutos) {
-        if (duracaoEstimadaMinutos <= 0) {
-            throw new IllegalArgumentException("A duração estimada deve ser um valor positivo.");
-        }
-        this.duracaoEstimadaMinutos = duracaoEstimadaMinutos;
-    }
+    public Prioridade getPrioridade() { return prioridade; }
+    public int getDuracao() { return duracao; }
 
     @Override
     public void realizarServico() {
-        System.out.println("Iniciando suporte técnico: " + getDescricao());
-        System.out.println("Prioridade: " + prioridade.getDescricao());
-        System.out.println("Horário de atendimento: " + horarioAtendimento);
-        System.out.println("Duração estimada: " + duracaoEstimadaMinutos + " minutos.");
-
-        // Simula a realização do serviço
-        System.out.println("Suporte técnico em andamento...");
-        System.out.println("Suporte técnico concluído com sucesso.");
+        System.out.println("Realizando suporte técnico com prioridade " + prioridade.toString().toLowerCase());
     }
 
-    public enum Prioridade {
-        ALTA("Alta"),
-        MEDIA("Média"),
-        BAIXA("Baixa"),
-        DESCONHECIDA("Desconhecida");
-
-        private final String descricao;
-
-        Prioridade(String descricao) {
-            this.descricao = descricao;
-        }
-
-        public String getDescricao() {
-            return descricao;
-        }
+    @Override
+    public String toString() {
+        return super.toString() + ", Prioridade=" + prioridade + ", Duração=" + duracao + "min";
     }
 }
