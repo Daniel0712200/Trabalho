@@ -1,76 +1,55 @@
-/**
- * Classe abstrata que representa um serviço a ser realizado.
- * Esta classe serve como base para tipos específicos de serviços, garantindo
- * que todos os serviços tenham uma descrição e um valor válidos.
- */
-public abstract class Servico {
-    private String descricao;
-    private double valor;
+import java.text.NumberFormat;
+import java.util.Locale;
 
-    /**
-     * Construtor para a classe Servico.
-     *
-     * @param descricao Descrição do serviço. Não pode ser nula ou vazia.
-     * @param valor     Valor do serviço. Não pode ser negativo.
-     * @throws IllegalArgumentException Se a descrição estiver vazia ou o valor for negativo.
-     */
+public class Servico {
+    private String descricao;
+    private double valor; // Atributo valor
+
+    // Construtor da classe Servico com validação de entrada
     public Servico(String descricao, double valor) {
-        setDescricao(descricao);
-        setValor(valor);
+        if (descricao == null || descricao.trim().isEmpty()) {
+            throw new IllegalArgumentException("Descrição não pode ser nula ou vazia.");
+        }
+        if (valor < 0) {
+            throw new IllegalArgumentException("Valor não pode ser negativo.");
+        }
+        this.descricao = descricao;
+        this.valor = valor; // Atribuição do valor
     }
 
+    // Método para obter a descrição do serviço
     public String getDescricao() {
         return descricao;
     }
 
+    // Método getter para valor
     public double getValor() {
         return valor;
     }
 
-    /**
-     * Método abstrato que deve ser implementado pelas subclasses para realizar o serviço.
-     * Cada tipo de serviço deve definir como ele é realizado.
-     */
-    public abstract void realizarServico();
-
-    /**
-     * Define a descrição do serviço.
-     *
-     * @param descricao A nova descrição do serviço. Não pode ser nula ou vazia.
-     * @throws IllegalArgumentException Se a descrição estiver vazia.
-     */
-    public void setDescricao(String descricao) {
-        if (descricao == null || descricao.trim().isEmpty()) {
-            throw new IllegalArgumentException("Descrição não pode ser vazia ou nula.");
-        }
-        this.descricao = descricao;
+    // Método toString para representação em string do serviço
+    @Override
+    public String toString() {
+        return String.format("Descrição: %s, Valor: %s", descricao, toFormattedString());
     }
 
-    /**
-     * Define o valor do serviço.
-     *
-     * @param valor O novo valor do serviço. Não pode ser negativo.
-     * @throws IllegalArgumentException Se o valor for negativo.
-     */
-    public void setValor(double valor) {
-        if (valor < 0) {
-            throw new IllegalArgumentException("O valor não pode ser negativo.");
-        }
-        this.valor = valor;
+    // Método para formatar o valor como moeda
+    public String toFormattedString() {
+        NumberFormat format = NumberFormat.getCurrencyInstance(new Locale("pt", "BR")); // Formato brasileiro
+        return format.format(valor);
+    }
+
+    // Métodos equals e hashCode para comparação e uso em coleções
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Servico servico = (Servico) obj;
+        return Double.compare(servico.valor, valor) == 0 && descricao.equals(servico.descricao);
     }
 
     @Override
-    public String toString() {
-        return String.format("Serviço: '%s', Valor: R$ %.2f", descricao, valor);
-    }
-
-    /**
-     * Método que fornece informações detalhadas sobre o serviço.
-     * Pode ser sobrescrito nas subclasses para fornecer informações adicionais.
-     *
-     * @return String contendo detalhes do serviço.
-     */
-    public String detalhesServico() {
-        return String.format("Detalhes do Serviço: %s, Valor: R$ %.2f", descricao, valor);
+    public int hashCode() {
+        return 31 * descricao.hashCode() + Double.hashCode(valor);
     }
 }
